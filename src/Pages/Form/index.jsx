@@ -1,15 +1,48 @@
-import React from 'react'
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from 'react'
 import { TextField, Button, Container } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
+import { useForm, Controller } from 'react-hook-form';
+import { DataGrid } from '@mui/x-data-grid';
 
-function Form () {
-    const { control, handleSubmit } = useForm();
+function Form() {
+    const { control, handleSubmit, reset } = useForm();
+
+    const [searchedData, setSearchedData] = useState([])
+    const [formData, setFormData] = useState([])
+    const [search, setSearch] = useState('')
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'sName', headerName: 'Student name', width: 130 },
+        { field: 'sFatherName', headerName: 'Father name', width: 130 },
+        { field: 'sMotherName', headerName: 'Mother name', width: 130 },
+        { field: 'rollNo', headerName: 'Roll No', type: 'number', width: 90 },
+        { field: 'standard', headerName: 'Standard', type: 'number', width: 90 },
+        { field: 'sPhoneNo', headerName: 'Phone No', type: 'number', width: 90 },
+
+    ];
+
+    function handleSearchData(e) {
+        e.preventDefault()
+        setSearch(e.target.value)
+        const searchedData = formData?.filter((item) => item?.sName.toLowerCase().includes(search))
+        setSearchedData(searchedData)
+    }
 
     const onSubmit = (data) => {
-        console.log(data);
-        // You can perform actions like sending the data to a server here
+        const submitData = { ...data, id: formData?.length + 1 }
+        setFormData((prev) => [...prev, submitData])
+        reset({
+            sName: '',
+            sFatherName: '',
+            sMotherName: '',
+            rollNo: '',
+            standard: '',
+            sPhoneNo: ''
+        })
     };
+
+
     return (
         <>
             <Container maxWidth="sm">
@@ -17,7 +50,7 @@ function Form () {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Controller
                         name="sName"
-                        control={control}                        
+                        control={control}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -31,7 +64,7 @@ function Form () {
 
                     <Controller
                         name="sFatherName"
-                        control={control}                        
+                        control={control}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -45,7 +78,7 @@ function Form () {
 
                     <Controller
                         name="sMotherName"
-                        control={control}                        
+                        control={control}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -59,7 +92,7 @@ function Form () {
 
                     <Controller
                         name="rollNo"
-                        control={control}                        
+                        control={control}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -69,33 +102,34 @@ function Form () {
                                 margin="normal"
                             />
                         )}
-                    />  
+                    />
+                    
                     <Controller
-                    name='standard'                    
-                    control={control}
-                    render={({field})=>(
-                        <TextField 
-                        {...field}
-                        label="standard"
-                        variant='outlined'
-                        fullWidth
-                        margin="normal"
-                        />
-                    )}
+                        name='standard'
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="standard"
+                                variant='outlined'
+                                fullWidth
+                                margin="normal"
+                            />
+                        )}
                     />
 
                     <Controller
-                    name='sPhoneNo'
-                    control={control}                    
-                    render={({field})=>(
-                        <TextField
-                        {...field}
-                        label="Parent's Contact Number"
-                        fullWidth
-                        margin='normal'
-                        variant='outlined'
-                        />
-                    )}
+                        name='sPhoneNo'
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Parent's Contact Number"
+                                fullWidth
+                                margin='normal'
+                                variant='outlined'
+                            />
+                        )}
 
                     />
 
@@ -108,6 +142,33 @@ function Form () {
                         Submit
                     </Button>
                 </form>
+            </Container>
+
+            <Container style={{ marginTop: '20px' }}>
+
+                <div>
+                    <input
+                        style={{ width: '200px', height: '30px' }}
+                        value={search}
+                        type='search'
+                        placeholder='search..'
+                        onChange={(e) => handleSearchData(e)}
+                    />
+                </div>
+
+                <div style={{ height: 400, width: '100%', marginTop: '10px' }}>
+                    <DataGrid
+                        rows={search ? searchedData : formData}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 5 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+
+                    />
+                </div>
             </Container>
         </>
     )
