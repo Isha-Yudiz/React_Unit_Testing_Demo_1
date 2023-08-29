@@ -16,9 +16,8 @@ function Form () {
                 <h1>Student Form</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Controller
-                        name="name"
-                        control={control}
-                        defaultValue=""
+                        name="sName"
+                        control={control}                        
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -31,9 +30,8 @@ function Form () {
                     />
 
                     <Controller
-                        name="fatherName"
-                        control={control}
-                        defaultValue=""
+                        name="sFatherName"
+                        control={control}                        
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -46,9 +44,8 @@ function Form () {
                     />
 
                     <Controller
-                        name="motherName"
-                        control={control}
-                        defaultValue=""
+                        name="sMotherName"
+                        control={control}                        
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -62,8 +59,7 @@ function Form () {
 
                     <Controller
                         name="rollNo"
-                        control={control}
-                        defaultValue=""
+                        control={control}                        
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -75,8 +71,7 @@ function Form () {
                         )}
                     />  
                     <Controller
-                    name='standard'
-                    defaultValue=""
+                    name='standard'                    
                     control={control}
                     render={({field})=>(
                         <TextField 
@@ -90,9 +85,8 @@ function Form () {
                     />
 
                     <Controller
-                    name='parentsNumber'
-                    control={control}
-                    defaultValue={""}
+                    name='sPhoneNo'
+                    control={control}                    
                     render={({field})=>(
                         <TextField
                         {...field}
