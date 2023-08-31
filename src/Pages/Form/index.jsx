@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { DataGrid } from '@mui/x-data-grid';
 
 function Form() {
-    const { control, handleSubmit, reset } = useForm();
+    const { control, handleSubmit, reset , formState: { errors } } = useForm();
 
     const [searchedData, setSearchedData] = useState([])
     const [formData, setFormData] = useState([])
@@ -58,8 +58,11 @@ function Form() {
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
+                                error={!!errors.sName}
+                                helperText={errors.sName && errors.sName.message}
                             />
                         )}
+                        rules={{ required: 'Name is required' }}
                     />
 
                     <Controller
@@ -72,8 +75,11 @@ function Form() {
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
+                                error={!!errors.sFatherName}
+                                helperText={errors.sFatherName && errors.sFatherName.message}
                             />
                         )}
+                        rules={{ required: "Father's Name is required" }}
                     />
 
                     <Controller
@@ -86,8 +92,12 @@ function Form() {
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
+                                error={!!errors.sMotherName}
+                                helperText={errors.sMotherName && errors.sMotherName.message}
+
                             />
                         )}
+                        rules={{ required: "Mother's Name is required" }}
                     />
 
                     <Controller
@@ -100,8 +110,12 @@ function Form() {
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
+                                type='number'
+                                error={!!errors.rollNo}
+                                helperText={errors.rollNo && errors.rollNo.message}
                             />
                         )}
+                        rules={{ required: 'Roll No is required' }}
                     />
                     
                     <Controller
@@ -114,8 +128,12 @@ function Form() {
                                 variant='outlined'
                                 fullWidth
                                 margin="normal"
+                                type='number'
+                                error={!!errors.standard}
+                                helperText={errors.standard && errors.standard.message}
                             />
                         )}
+                        rules={{ required: 'Standard is required' }}
                     />
 
                     <Controller
@@ -128,8 +146,18 @@ function Form() {
                                 fullWidth
                                 margin='normal'
                                 variant='outlined'
+                                type='number'
+                                error={!!errors.phoneNumber}
+                                helperText={errors.phoneNumber && 'Invalid phone number'}
+                                
                             />
                         )}
+                        rules={{
+                            pattern: {
+                              value: /^[6-9]\d{9}$/,
+                              message: 'Invalid phone number',
+                            },
+                          }}
 
                     />
 
