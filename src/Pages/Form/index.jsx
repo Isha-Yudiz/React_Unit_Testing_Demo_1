@@ -5,11 +5,24 @@ import { useForm, Controller } from 'react-hook-form';
 import { DataGrid } from '@mui/x-data-grid';
 
 function Form() {
-    const { control, handleSubmit, reset , formState: { errors } } = useForm();
+    const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
     const [searchedData, setSearchedData] = useState([])
     const [formData, setFormData] = useState([])
     const [search, setSearch] = useState('')
+
+    const rules = {
+        global: (value = 'This field is required') => ({ required: value }),
+        phone: (value = 'This field is required') => ({
+            required: value,
+            maxLength: {
+                value: 10,
+                message: 'Phone number must be 10 digits',
+            },
+        }),
+    };
+    
+
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -51,6 +64,7 @@ function Form() {
                     <Controller
                         name="sName"
                         control={control}
+                        rules={rules.global()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -62,12 +76,12 @@ function Form() {
                                 helperText={errors.sName && errors.sName.message}
                             />
                         )}
-                        rules={{ required: 'Name is required' }}
                     />
 
                     <Controller
                         name="sFatherName"
                         control={control}
+                        rules={rules.global()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -79,12 +93,12 @@ function Form() {
                                 helperText={errors.sFatherName && errors.sFatherName.message}
                             />
                         )}
-                        rules={{ required: "Father's Name is required" }}
                     />
 
                     <Controller
                         name="sMotherName"
                         control={control}
+                        rules={rules.global()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -97,12 +111,12 @@ function Form() {
 
                             />
                         )}
-                        rules={{ required: "Mother's Name is required" }}
                     />
 
                     <Controller
                         name="rollNo"
                         control={control}
+                        rules={rules.global()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -115,12 +129,12 @@ function Form() {
                                 helperText={errors.rollNo && errors.rollNo.message}
                             />
                         )}
-                        rules={{ required: 'Roll No is required' }}
                     />
-                    
+
                     <Controller
                         name='standard'
                         control={control}
+                        rules={rules.global()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -133,12 +147,12 @@ function Form() {
                                 helperText={errors.standard && errors.standard.message}
                             />
                         )}
-                        rules={{ required: 'Standard is required' }}
                     />
 
                     <Controller
                         name='sPhoneNo'
                         control={control}
+                        rules={rules.phone()}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -146,19 +160,11 @@ function Form() {
                                 fullWidth
                                 margin='normal'
                                 variant='outlined'
-                                type='number'
-                                error={!!errors.phoneNumber}
-                                helperText={errors.phoneNumber && 'Invalid phone number'}
-                                
+                                type='text'
+                                error={!!errors.sPhoneNo}
+                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}                            
                             />
                         )}
-                        rules={{
-                            pattern: {
-                              value: /^[6-9]\d{9}$/,
-                              message: 'Invalid phone number',
-                            },
-                          }}
-
                     />
 
                     <Button
@@ -179,7 +185,7 @@ function Form() {
                         style={{ width: '200px', height: '30px' }}
                         value={search}
                         type='search'
-                        placeholder='search..'
+                        placeholder='Search Student Name..'
                         onChange={(e) => handleSearchData(e)}
                     />
                 </div>
