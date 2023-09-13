@@ -21,17 +21,17 @@ function Form() {
             },
         }),
     };
-    
+
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'sName', headerName: 'Student name', width: 130 },
-        { field: 'sFatherName', headerName: 'Father name', width: 130 },
-        { field: 'sMotherName', headerName: 'Mother name', width: 130 },
-        { field: 'rollNo', headerName: 'Roll No', type: 'number', width: 90 },
-        { field: 'standard', headerName: 'Standard', type: 'number', width: 90 },
-        { field: 'sPhoneNo', headerName: 'Phone No', type: 'number', width: 90 },
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'sName', headerName: 'Student name', width: 150 },
+        { field: 'sFatherName', headerName: 'Father name', width: 170 },
+        { field: 'sMotherName', headerName: 'Mother name', width: 170 },
+        { field: 'rollNo', headerName: 'Roll No', width: 130 },
+        { field: 'standard', headerName: 'Standard', width: 120 },
+        { field: 'sPhoneNo', headerName: 'Phone No', width: 160 },
 
     ];
 
@@ -42,9 +42,7 @@ function Form() {
         setSearchedData(searchedData)
     }
 
-    const onSubmit = (data) => {
-        const submitData = { ...data, id: formData?.length + 1 }
-        setFormData((prev) => [...prev, submitData])
+    function handleClear() {
         reset({
             sName: '',
             sFatherName: '',
@@ -53,6 +51,12 @@ function Form() {
             standard: '',
             sPhoneNo: ''
         })
+    }
+
+    const onSubmit = (data) => {
+        const submitData = { ...data, id: formData?.length + 1 }
+        setFormData((prev) => [...prev, submitData])
+        handleClear()
     };
 
 
@@ -162,7 +166,7 @@ function Form() {
                                 variant='outlined'
                                 type='text'
                                 error={!!errors.sPhoneNo}
-                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}                            
+                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}
                             />
                         )}
                     />
@@ -175,6 +179,15 @@ function Form() {
                     >
                         Submit
                     </Button>
+
+                    <Button
+                        sx={{ ml: 2 }}
+                        variant="contained"
+                        onClick={handleClear}
+                    >
+                        Clear
+                    </Button>
+
                 </form>
             </Container>
 
