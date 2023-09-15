@@ -21,17 +21,17 @@ function Form() {
             },
         }),
     };
-
+    
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'sName', headerName: 'Student name', width: 150 },
-        { field: 'sFatherName', headerName: 'Father name', width: 170 },
-        { field: 'sMotherName', headerName: 'Mother name', width: 170 },
-        { field: 'rollNo', headerName: 'Roll No', width: 130 },
-        { field: 'standard', headerName: 'Standard', width: 120 },
-        { field: 'sPhoneNo', headerName: 'Phone No', width: 160 },
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'sName', headerName: 'Student name', width: 130 },
+        { field: 'sFatherName', headerName: 'Father name', width: 130 },
+        { field: 'sMotherName', headerName: 'Mother name', width: 130 },
+        { field: 'rollNo', headerName: 'Roll No', type: 'number', width: 90 },
+        { field: 'standard', headerName: 'Standard', type: 'number', width: 90 },
+        { field: 'sPhoneNo', headerName: 'Phone No', type: 'number', width: 90 },
 
     ];
 
@@ -42,7 +42,9 @@ function Form() {
         setSearchedData(searchedData)
     }
 
-    function handleClear() {
+    const onSubmit = (data) => {
+        const submitData = { ...data, id: formData?.length + 1 }
+        setFormData((prev) => [...prev, submitData])
         reset({
             sName: '',
             sFatherName: '',
@@ -51,19 +53,13 @@ function Form() {
             standard: '',
             sPhoneNo: ''
         })
-    }
-
-    const onSubmit = (data) => {
-        const submitData = { ...data, id: formData?.length + 1 }
-        setFormData((prev) => [...prev, submitData])
-        handleClear()
     };
 
 
     return (
         <>
-            <Container maxWidth="sm">
-                <h1>Student Form</h1>
+            <Container maxWidth="sm" data-testid="form-render">
+                <h1 data-testid='title'>Student Form</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Controller
                         name="sName"
@@ -125,6 +121,7 @@ function Form() {
                             <TextField
                                 {...field}
                                 label="RollNo"
+                                data-textid='test-roll-number'
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
@@ -166,7 +163,7 @@ function Form() {
                                 variant='outlined'
                                 type='text'
                                 error={!!errors.sPhoneNo}
-                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}
+                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}                            
                             />
                         )}
                     />
@@ -176,18 +173,10 @@ function Form() {
                         variant="contained"
                         color="primary"
                         startIcon={<SendIcon />}
+                        data-testid='submit-button'
                     >
                         Submit
                     </Button>
-
-                    <Button
-                        sx={{ ml: 2 }}
-                        variant="contained"
-                        onClick={handleClear}
-                    >
-                        Clear
-                    </Button>
-
                 </form>
             </Container>
 
