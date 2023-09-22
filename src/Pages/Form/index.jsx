@@ -4,7 +4,7 @@ import { Send as SendIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { DataGrid } from '@mui/x-data-grid';
 
-function Form() {
+function Form () {
     const { control, handleSubmit, reset, formState: { errors } } = useForm();
 
     const [searchedData, setSearchedData] = useState([])
@@ -21,30 +21,28 @@ function Form() {
             },
         }),
     };
-    
+
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'sName', headerName: 'Student name', width: 130 },
-        { field: 'sFatherName', headerName: 'Father name', width: 130 },
-        { field: 'sMotherName', headerName: 'Mother name', width: 130 },
-        { field: 'rollNo', headerName: 'Roll No', type: 'number', width: 90 },
-        { field: 'standard', headerName: 'Standard', type: 'number', width: 90 },
-        { field: 'sPhoneNo', headerName: 'Phone No', type: 'number', width: 90 },
+        { field: 'id', headerName: 'ID', width: 100, },
+        { field: 'sName', headerName: 'Student name', width: 150 },
+        { field: 'sFatherName', headerName: 'Father name', width: 170 },
+        { field: 'sMotherName', headerName: 'Mother name', width: 170 },
+        { field: 'rollNo', headerName: 'Roll No', width: 130 },
+        { field: 'standard', headerName: 'Standard', width: 120 },
+        { field: 'sPhoneNo', headerName: 'Phone No', width: 160 },
 
     ];
 
-    function handleSearchData(e) {
+    function handleSearchData (e) {
         e.preventDefault()
         setSearch(e.target.value)
         const searchedData = formData?.filter((item) => item?.sName.toLowerCase().includes(search))
         setSearchedData(searchedData)
     }
 
-    const onSubmit = (data) => {
-        const submitData = { ...data, id: formData?.length + 1 }
-        setFormData((prev) => [...prev, submitData])
+    function handleClear () {
         reset({
             sName: '',
             sFatherName: '',
@@ -53,13 +51,19 @@ function Form() {
             standard: '',
             sPhoneNo: ''
         })
+    }
+
+    const onSubmit = (data) => {
+        const submitData = { ...data, id: formData?.length + 1 }
+        setFormData((prev) => [...prev, submitData])
+        handleClear()
     };
 
 
     return (
         <>
-            <Container maxWidth="sm" data-testid="form-render">
-                <h1 data-testid='title'>Student Form</h1>
+            <Container maxWidth="sm" data-testid='form-render'>
+                <h1>Student Form</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Controller
                         name="sName"
@@ -69,6 +73,8 @@ function Form() {
                             <TextField
                                 {...field}
                                 label="Name"
+                                inputProps={{ "data-testid": "sName" }}
+                                // data-testid="sName"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
@@ -121,7 +127,9 @@ function Form() {
                             <TextField
                                 {...field}
                                 label="RollNo"
-                                data-textid='test-roll-number'
+                                inputProps={{ "data-testid": "nRollNo" }}
+                                // data-testid="nRollNo"
+                                title='Student Roll Number'
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
@@ -140,6 +148,8 @@ function Form() {
                             <TextField
                                 {...field}
                                 label="standard"
+                                // data-testid="nStandard"
+                                inputProps={{ "data-testid": "nStandard" }}
                                 variant='outlined'
                                 fullWidth
                                 margin="normal"
@@ -157,26 +167,38 @@ function Form() {
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                inputProps={{ "data-testid": "sContactNo" }}
+                                // data-testid="sContactNo"
                                 label="Parent's Contact Number"
                                 fullWidth
                                 margin='normal'
                                 variant='outlined'
                                 type='text'
                                 error={!!errors.sPhoneNo}
-                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}                            
+                                helperText={errors.sPhoneNo && errors.sPhoneNo.message}
                             />
                         )}
                     />
 
                     <Button
                         type="submit"
+                        data-testid="submit-button"
                         variant="contained"
                         color="primary"
                         startIcon={<SendIcon />}
-                        data-testid='submit-button'
                     >
                         Submit
                     </Button>
+
+                    <Button
+                        sx={{ ml: 2 }}
+                        data-testid="clear-button"
+                        variant="contained"
+                        onClick={handleClear}
+                    >
+                        Clear
+                    </Button>
+
                 </form>
             </Container>
 
